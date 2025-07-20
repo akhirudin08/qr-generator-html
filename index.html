@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QR Code dengan Gambar</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 2rem; }
+    canvas { border: 1px solid #ccc; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <h2>QR Code dengan Gambar Overlay</h2>
+
+  <input type="text" id="linkInput" placeholder="Paste link di sini" size="40"><br><br>
+  <input type="file" id="imgInput" accept="image/*"><br><br>
+
+  <canvas id="qrCanvas" width="256" height="256"></canvas>
+
+  <script>
+    const canvas = document.getElementById('qrCanvas');
+    const ctx = canvas.getContext('2d');
+    const linkInput = document.getElementById('linkInput');
+    const imgInput = document.getElementById('imgInput');
+
+    function generateQR(link, overlayImg) {
+      const qr = qrcode(0, 'L');
+      qr.addData(link);
+      qr.make();
+
+      const tileW = canvas.width / qr.getModuleCount();
+      const tileH = canvas.height / qr.getModuleCount();
+
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw QR code
+      for (let row = 0; row < qr.getModuleCount(); row++) {
+        for (let col = 0; col < qr.getModuleCount(); col++) {
+          ctx.fillStyle = qr.isDark(row, col) ? "#000000" : "#FFFFFF";
+          ctx.fillRect(col * tileW, row * tileH, tileW, tileH);
+        }
+      }
+
+      // Draw overlay image if available
+      if (overlayImg) {
+        const imgSize = canvas.width * 0.3; // 30% of canvas size
+        ctx.drawImage(overlayImg, (canvas.width - imgSize) / 2, (canvas.height - imgSize) / 2, imgSize, imgSize);
+      }
+    }
+
+    let overlayImage = null;
+
+    imgInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          overlayImage = new Image();
+          overlayImage.onload = () => {
+            if (linkInput.value) generateQR(linkInput.value, overlayImage);
+          };
+          overlayImage.src = evt.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    linkInput.addEventListener('input', () => {
+      if (linkInput.value) generateQR(linkInput.value, overlayImage);
+    });
+  </script>
+</body>
+</html>
