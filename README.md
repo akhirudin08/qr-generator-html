@@ -17,8 +17,8 @@ Web app sederhana untuk menghasilkan QR Code otomatis dari link yang kamu paste,
 - [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 - [Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)
 - [QR Code Generator by Kazuhiko Arase](https://github.com/kazuhikoarase/qrcode-generator)
-
-![Screenshot](Screenshot 2025-07-20 161826.png)
+Screenshhot
+<img width="1913" height="752" alt="Screenshot 2025-07-20 161826" src="https://github.com/user-attachments/assets/0e06874b-d9ab-47d8-ac19-f425c4fcecb3" />
 
 
 
